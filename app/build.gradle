@@ -1,0 +1,40 @@
+apply plugin: 'com.android.application'
+
+String APK_NAME = "BeaconMonitor"
+int VERSION_CODE = 4
+String VERSION_NAME = "1.0.1"
+
+android {
+    compileSdkVersion 24
+    buildToolsVersion '25.0.0'
+
+    defaultConfig {
+        applicationId "com.phunware.beaconmonitor"
+        minSdkVersion 21
+        targetSdkVersion 22
+        versionCode VERSION_CODE
+        versionName VERSION_NAME
+//        archivesBaseName = APK_NAME;
+    }
+    buildTypes {
+        release {
+//            minifyEnabled false
+//            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            applicationVariants.all { variant ->
+                variant.outputs.each { output ->
+                    output.outputFile = new File(
+                            output.outputFile.parent,
+                            output.outputFile.name.replace("app-release.apk", APK_NAME + ".apk"))
+                }
+            }
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    testCompile 'junit:junit:4.12'
+    compile 'com.android.support:appcompat-v7:24.1.1'
+    compile 'com.android.support:design:24.1.1'
+    compile 'org.altbeacon:android-beacon-library:2.8'
+}

@@ -1,0 +1,18 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.phunware.beaconmonitor.MainActivity">
+    <item
+        android:id="@+id/action_scan"
+        android:orderInCategory="0"
+        android:title="@string/action_scan"
+        app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/action_switch_hex_dec"
+        android:orderInCategory="2"
+        android:title="@string/action_switch_hex_dec"
+        android:checkable="true"
+        android:checked="false"
+        app:showAsAction="never"/>
+</menu>

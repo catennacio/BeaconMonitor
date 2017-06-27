@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Beacon Monitor</string>
+    <string name="action_scan">Scan</string>
+    <string name="action_stop_scan">Stop</string>
+    <string name="action_switch_hex_dec">Show in hex</string>
+    <string name="major">MAJOR</string>
+    <string name="minor">MINOR</string>
+    <string name="rssi">RSSI</string>
+    <string name="tx_power">Tx</string>
+    <string name="hint">Enter UUID. No UUID will scan all beacons.</string>
+    <string name="grant_permissions">Please grant all permissions to use app.</string>
+</resources>
