@@ -3,6 +3,7 @@
     <string name="action_scan">Scan</string>
     <string name="action_stop_scan">Stop</string>
     <string name="action_switch_hex_dec">Show in hex</string>
+    <string name="action_use_simple_lib">Use Simple Ble Scanner lib</string>
     <string name="major">MAJOR</string>
     <string name="minor">MINOR</string>
     <string name="rssi">RSSI</string>
