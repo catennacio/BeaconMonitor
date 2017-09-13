@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context="com.phunware.beaconmonitor.ScrollingActivity">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/app_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark"
+        android:fitsSystemWindows="true">
+
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/collapsing_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            android:fitsSystemWindows="true"
+            app:contentScrim="?attr/colorPrimary"
+            app:layout_collapseMode="parallax"
+            android:paddingTop="32dp"
+            android:paddingBottom="16dp"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp">
+
+            <RelativeLayout
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:id="@+id/rl_config"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fitsSystemWindows="true">
+
+                <EditText
+                    android:id="@+id/et_UUID"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerInParent="true"
+                    android:ellipsize="end"
+                    android:hint="@string/hint_uuid"
+                    android:imeActionLabel="Done"
+                    android:imeOptions="actionDone"
+                    android:inputType="textNoSuggestions"
+                    android:maxLines="1"
+                    android:textAlignment="center"
+                    android:textAllCaps="true"
+                    android:textSize="@dimen/edittext_text_size"
+                    />
+
+                <EditText
+                    android:id="@+id/et_Major"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@+id/et_UUID"
+                    android:ellipsize="end"
+                    android:hint="@string/hint_major"
+                    android:imeActionLabel="Done"
+                    android:imeOptions="actionDone"
+                    android:inputType="number"
+                    android:maxLines="1"
+                    android:textAlignment="center"
+                    android:textAllCaps="true"
+                    android:textSize="@dimen/edittext_text_size"
+                    />
+
+                <EditText
+                    android:id="@+id/et_Minor"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/et_UUID"
+                    android:layout_toEndOf="@id/et_Major"
+                    android:ellipsize="end"
+                    android:hint="@string/hint_minor"
+                    android:imeActionLabel="Done"
+                    android:imeOptions="actionDone"
+                    android:inputType="number"
+                    android:maxLines="1"
+                    android:textAlignment="center"
+                    android:textAllCaps="true"
+                    android:textSize="@dimen/edittext_text_size"
+                    />
+
+                <android.support.v7.widget.SwitchCompat
+                    android:id="@+id/switch_core_bluetooth"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/et_Major"
+                    android:layout_marginTop="16dp"
+                    android:checked="true"
+                    android:switchPadding="16dp"
+                    android:text="@string/action_use_core_bluetooth"
+                    android:theme="@style/SwitchTheme"
+                    tools:checked="true"/>
+
+                <android.support.v7.widget.SwitchCompat
+                    android:id="@+id/switch_show_hex"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/switch_core_bluetooth"
+                    android:layout_marginTop="16dp"
+                    android:checked="false"
+                    android:splitTrack="false"
+                    android:switchPadding="16dp"
+                    android:text="@string/action_switch_hex_dec"
+                    android:theme="@style/SwitchTheme"
+                    tools:checked="true"/>
+
+                <android.support.v7.widget.SwitchCompat
+                    android:id="@+id/switch_group_mac_address"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/switch_show_hex"
+                    android:layout_marginTop="16dp"
+                    android:checked="false"
+                    android:splitTrack="false"
+                    android:switchPadding="16dp"
+                    android:text="@string/action_switch_group_mac_address"
+                    android:theme="@style/SwitchTheme"
+                    tools:checked="true"/>
+            </RelativeLayout>
+
+        </android.support.design.widget.CollapsingToolbarLayout>
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorFab"
+            android:fitsSystemWindows="true"
+            app:layout_collapseMode="parallax"
+            app:layout_scrollFlags="scroll|enterAlways"
+            app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            app:contentInsetStart="0dp"
+            app:title="">
+
+            <LinearLayout android:id="@+id/ll_title"
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:layout_weight="1"
+                    android:text="@string/mac_address"
+                    android:minWidth="100dp"
+                    android:textAlignment="center"
+                    android:textStyle="bold"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:layout_weight="1"
+                    android:text="@string/major"
+                    android:minWidth="30dp"
+                    android:textAlignment="center"
+                    android:textStyle="bold"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:layout_weight="1"
+                    android:text="@string/minor"
+                    android:minWidth="30dp"
+                    android:textAlignment="center"
+                    android:textStyle="bold"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:layout_weight="1"
+                    android:text="@string/rssi"
+                    android:minWidth="30dp"
+                    android:textAlignment="center"
+                    android:textStyle="bold"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:layout_weight="1"
+                    android:text="@string/tx_power"
+                    android:minWidth="30dp"
+                    android:textAlignment="center"
+                    android:textStyle="bold"
+                    />
+            </LinearLayout>
+        </android.support.v7.widget.Toolbar>
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/beacon_recycle_view"
+        app:layout_anchor="@id/app_bar"
+        app:layout_anchorGravity="bottom|end"
+        android:scrollbars="none"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        >
+    </android.support.v7.widget.RecyclerView>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_scan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/fab_margin"
+        android:background="@color/colorFab"
+        app:layout_anchor="@id/app_bar"
+        app:layout_anchorGravity="bottom|end"/>
+
+</android.support.design.widget.CoordinatorLayout>

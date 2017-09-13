@@ -5,13 +5,13 @@
     <item
         android:id="@+id/action_scan"
         android:orderInCategory="0"
-        android:title="@string/action_scan"
+        android:title="@string/action_start_scan"
         app:showAsAction="always"/>
 
     <item
         android:id="@+id/action_switch_scan_lib"
         android:orderInCategory="1"
-        android:title="@string/action_use_simple_lib"
+        android:title="@string/action_use_core_bluetooth"
         android:checkable="true"
         android:checked="true"
         app:showAsAction="never"/>

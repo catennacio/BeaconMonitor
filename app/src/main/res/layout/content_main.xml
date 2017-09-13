@@ -25,19 +25,64 @@
         android:textAlignment="center"
         android:inputType="textNoSuggestions"
         android:textSize="@dimen/edittext_text_size"
-        android:singleLine="true"
+        android:maxLines="1"
         android:imeActionLabel="Done"
         android:imeOptions="actionDone"
         android:ellipsize="end"
-        android:hint="@string/hint"
+        android:hint="@string/hint_uuid"
         />
+
+    <EditText
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/et_Major"
+        android:textAllCaps="true"
+        android:textAlignment="center"
+        android:inputType="number"
+        android:textSize="@dimen/edittext_text_size"
+        android:maxLines="1"
+        android:imeActionLabel="Done"
+        android:imeOptions="actionDone"
+        android:ellipsize="end"
+        android:hint="@string/hint_major"
+        android:layout_below="@+id/et_UUID"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="40dp"/>
+
+    <EditText
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/et_Minor"
+        android:textAllCaps="true"
+        android:textAlignment="center"
+        android:inputType="number"
+        android:textSize="@dimen/edittext_text_size"
+        android:maxLines="1"
+        android:imeActionLabel="Done"
+        android:imeOptions="actionDone"
+        android:ellipsize="end"
+        android:hint="@string/hint_minor"
+        android:layout_below="@+id/et_UUID"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="40dp"/>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/ll_title"
-        android:layout_below="@id/et_UUID">
+        android:layout_below="@id/et_Major">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_margin="10dp"
+            android:textAlignment="center"
+            android:textStyle="bold"
+            android:text="@string/mac_address"
+            />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

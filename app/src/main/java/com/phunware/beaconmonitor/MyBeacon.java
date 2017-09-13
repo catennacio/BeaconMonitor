@@ -4,6 +4,8 @@ import android.support.annotation.NonNull;
 
 import java.util.Comparator;
 
+import javax.crypto.Mac;
+
 /**
  * Created by Duy Nguyen on 7/28/16.
  */
@@ -12,12 +14,13 @@ public class MyBeacon implements Comparable<MyBeacon>
     public String UUID;
     public String Major;
     public String Minor;
-    public int RSSI;
-    public int TxPower;
+    public double RSSI;
+    public double TxPower;
     public String MacAddress;
 
     public MyBeacon()
     {
+        MacAddress = "N/A";
     }
 
     @Override
@@ -139,40 +142,40 @@ public class MyBeacon implements Comparable<MyBeacon>
             }
         };
 
-        public static Comparator<MyBeacon> MAJOR_MINOR_RSSI = new Comparator<MyBeacon>()
+        public static Comparator<MyBeacon> MAJOR_MINOR_RSSI_ASC = new Comparator<MyBeacon>()
         {
             @Override
             public int compare(MyBeacon o1, MyBeacon o2)
             {
 
                 int major = o1.Major.compareTo(o2.Major);
-                if(major > 0)
+                if(major < 0)
                 {
                     return 1;
                 }
-                else if(major < 0)
+                else if(major > 0)
                 {
                     return -1;
                 }
                 else
                 {
                     int minor = o1.Minor.compareTo(o2.Minor);
-                    if(minor > 0)
+                    if(minor < 0)
                     {
                         return 1;
                     }
-                    else if(minor < 0)
+                    else if(minor > 0)
                     {
                         return -1;
                     }
                     else
                     {
-                        int rssi = o1.RSSI - o2.RSSI;
-                        if (rssi > 0)
+                        double rssi = o1.RSSI - o2.RSSI;
+                        if (rssi < 0)
                         {
                             return 1;
                         }
-                        else if (rssi < 0)
+                        else if (rssi > 0)
                         {
                             return -1;
                         }
@@ -224,7 +227,7 @@ public class MyBeacon implements Comparable<MyBeacon>
                         }
                         else
                         {
-                            int rssi = o1.RSSI - o2.RSSI;
+                            double rssi = o1.RSSI - o2.RSSI;
                             if (rssi > 0)
                             {
                                 return 1;

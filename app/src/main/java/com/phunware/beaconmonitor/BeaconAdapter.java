@@ -1,10 +1,6 @@
 package com.phunware.beaconmonitor;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.support.v4.content.ContextCompat;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +8,6 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -40,6 +35,7 @@ public class BeaconAdapter extends ArrayAdapter<MyBeacon>
         {
             v = LayoutInflater.from(parent.getContext()).inflate(R.layout.beacon_list_item, parent, false);
             holder = new ViewHolder();
+            holder.macAddress= (TextView)v.findViewById(R.id.tv_mac_address);
             holder.major = (TextView)v.findViewById(R.id.tv_major);
             holder.minor = (TextView)v.findViewById(R.id.tv_minor);
             holder.rssi = (TextView)v.findViewById(R.id.tv_rssi);
@@ -54,10 +50,11 @@ public class BeaconAdapter extends ArrayAdapter<MyBeacon>
 
         MyBeacon currentBeacon = getItem(position);
 
+        holder.macAddress.setText(currentBeacon.MacAddress);
         holder.major.setText(currentBeacon.Major);
         holder.minor.setText(currentBeacon.Minor);
-        holder.rssi.setText(Integer.toString(currentBeacon.RSSI));
-        holder.txPower.setText(Integer.toString(currentBeacon.TxPower));
+        holder.rssi.setText(Double.toString(currentBeacon.RSSI));
+        holder.txPower.setText(Double.toString(currentBeacon.TxPower));
 
         /*if(currentBeacon != null && currentBeacon.equals(watchBeacon))
         {
@@ -82,6 +79,7 @@ public class BeaconAdapter extends ArrayAdapter<MyBeacon>
 
     private static final class ViewHolder
     {
+        TextView macAddress;
         TextView major;
         TextView minor;
         TextView rssi;

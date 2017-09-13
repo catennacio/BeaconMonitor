@@ -4,8 +4,8 @@ import android.Manifest;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
-import android.os.ParcelUuid;
 import android.os.RemoteException;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -25,10 +25,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.phunware.beaconmonitor.ble.BleScanner;
-import com.phunware.beaconmonitor.ble.BleScannerListener;
-import com.phunware.beaconmonitor.ble.BleScannerOptions;
-import com.phunware.beaconmonitor.ble.LiveBeaconReading;
+import com.catennacio.simpleblescanner.BleScanner;
+import com.catennacio.simpleblescanner.BleScannerListener;
+import com.catennacio.simpleblescanner.BleScannerOptions;
+import com.catennacio.simpleblescanner.LiveBeaconReading;
 
 import org.altbeacon.beacon.Beacon;
 import org.altbeacon.beacon.BeaconConsumer;
@@ -51,8 +51,6 @@ public class MainActivity extends AppCompatActivity implements BeaconConsumer, R
 //    public static final String DEFAULT_UUID = "d3f6aa9c-59bb-11e6-929a-02e208b2d34f";//Mist
 //    public static final String DEFAULT_UUID = "30F10CA5-8D45-4AF3-BDCF-8387CE548A71";//Cisco
     public static final String DEFAULT_UUID = "";
-
-    enum ScanLibrary { SimpleBleScan, AltBeacon }
 
     private BeaconManager beaconManager;
     private Region region;
@@ -159,8 +157,29 @@ public class MainActivity extends AppCompatActivity implements BeaconConsumer, R
         beaconManager.setForegroundBetweenScanPeriod(0L);
         beaconManager.bind(this);
 
-        bleScannerOptions = new BleScannerOptions(BleScannerOptions.ScanMode.SCAN_MODE_BALANCE,
-            BleScannerOptions.ScanStrategy.SCAN_STRATEGY_PERIODIC);
+        BleScannerOptions.ScanStrategy scanStrategy;
+
+        try
+        {
+            //As of Android N DP4 ble scanner cannot be started more than 5 times per 30 seconds, so only use SCAN_STRATEGY_CONTINUOUS
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
+            {
+                scanStrategy = BleScannerOptions.ScanStrategy.SCAN_STRATEGY_CONTINUOUS;
+            }
+            else
+            {
+                scanStrategy = BleScannerOptions.ScanStrategy.SCAN_STRATEGY_PERIODIC;
+            }
+            Log.d(TAG, "onCreate: scanStrategy = " + scanStrategy);
+
+            bleScannerOptions = new BleScannerOptions(BleScannerOptions.ScanMode.SCAN_MODE_BALANCE, scanStrategy);
+        }
+        catch (Exception e)
+        {
+            Log.e(TAG, "onCreate: " + e.getMessage(), e);
+            e.printStackTrace();
+        }
+
     }
 
     @Override
@@ -176,6 +195,21 @@ public class MainActivity extends AppCompatActivity implements BeaconConsumer, R
     {
         beaconManager.unbind(this);
         super.onDestroy();
+    }
+
+    private boolean canAccessCoarseLocation()
+    {
+        return hasPermission(Manifest.permission.ACCESS_COARSE_LOCATION);
+    }
+
+    private boolean hasPermission(String perm)
+    {
+        return (PackageManager.PERMISSION_GRANTED == ContextCompat.checkSelfPermission(this, perm));
+    }
+
+    private boolean canAccessFineLocation()
+    {
+        return hasPermission(Manifest.permission.ACCESS_FINE_LOCATION);
     }
 
     private void checkAllPermissions()
@@ -203,21 +237,6 @@ public class MainActivity extends AppCompatActivity implements BeaconConsumer, R
                 }
             }
         }
-    }
-
-    private boolean canAccessCoarseLocation()
-    {
-        return hasPermission(Manifest.permission.ACCESS_COARSE_LOCATION);
-    }
-
-    private boolean canAccessFineLocation()
-    {
-        return hasPermission(Manifest.permission.ACCESS_FINE_LOCATION);
-    }
-
-    private boolean hasPermission(String perm)
-    {
-        return (PackageManager.PERMISSION_GRANTED == ContextCompat.checkSelfPermission(this, perm));
     }
 
     @Override
@@ -258,6 +277,8 @@ public class MainActivity extends AppCompatActivity implements BeaconConsumer, R
             {
                 item.setChecked(!item.isChecked());
                 scanLibrary = item.isChecked()?ScanLibrary.SimpleBleScan: ScanLibrary.AltBeacon;
+                stopScan();
+                startScan();
                 return true;
             }
             case R.id.action_switch_hex_dec:
@@ -289,6 +310,11 @@ public class MainActivity extends AppCompatActivity implements BeaconConsumer, R
                 break;
             }
         }
+
+        if(actionScanMenuItem != null)
+        {
+            actionScanMenuItem.setTitle(this.getResources().getString(R.string.action_stop_scan));
+        }
     }
 
     private void stopScan()
@@ -306,6 +332,11 @@ public class MainActivity extends AppCompatActivity implements BeaconConsumer, R
                 stopSimpleBleScanner();
                 break;
             }
+        }
+
+        if(actionScanMenuItem != null)
+        {
+            actionScanMenuItem.setTitle(this.getResources().getString(R.string.action_start_scan));
         }
     }
 
@@ -329,7 +360,6 @@ public class MainActivity extends AppCompatActivity implements BeaconConsumer, R
                 }
 
                 bleScanner.start();
-                actionScanMenuItem.setTitle(this.getResources().getString(R.string.action_stop_scan));
                 isBleScannerScanning = true;
             }
             catch (Exception e)
@@ -342,10 +372,9 @@ public class MainActivity extends AppCompatActivity implements BeaconConsumer, R
     private void stopSimpleBleScanner()
     {
         Log.d(TAG, "stopSimpleBleScanner: ");
-        if(isBleScannerScanning)
+        if(isBleScannerScanning && bleScanner != null)
         {
             bleScanner.stop();
-            actionScanMenuItem.setTitle(this.getResources().getString(R.string.action_scan));
             isBleScannerScanning = false;
         }
     }
@@ -353,7 +382,7 @@ public class MainActivity extends AppCompatActivity implements BeaconConsumer, R
     private void startAltScan()
     {
         Log.d(TAG, "startAltScan: ");
-        if(beaconManager.isBound(this))
+        if(beaconManager != null && beaconManager.isBound(this))
         {
             if(!isRanging)
             {
@@ -388,7 +417,6 @@ public class MainActivity extends AppCompatActivity implements BeaconConsumer, R
                     region = new Region("PwBeaconMonitor", identifier, null, null);
 
                     beaconManager.startRangingBeaconsInRegion(region);
-                    actionScanMenuItem.setTitle(this.getResources().getString(R.string.action_stop_scan));
                     isRanging = true;
                 }
                 catch (RemoteException e)
@@ -411,13 +439,12 @@ public class MainActivity extends AppCompatActivity implements BeaconConsumer, R
     private void stopAltScan()
     {
         Log.d(TAG, "stopAltScan: ");
-        if(isRanging)
+        if(beaconManager != null && isRanging)
         {
             try
             {
                 beaconManager.stopRangingBeaconsInRegion(region);
                 isRanging = false;
-                actionScanMenuItem.setTitle(this.getResources().getString(R.string.action_scan));
             }
             catch (RemoteException e)
             {
@@ -451,8 +478,8 @@ public class MainActivity extends AppCompatActivity implements BeaconConsumer, R
                 myBeacon.UUID = beacon.getId1().toString();
                 if(isHexChecked)
                 {
-                    myBeacon.Major = decToHex(Integer.parseInt(beacon.getId2().toString()));
-                    myBeacon.Minor= decToHex(Integer.parseInt(beacon.getId3().toString()));
+                    myBeacon.Major = Utils.decToHex(Integer.parseInt(beacon.getId2().toString()));
+                    myBeacon.Minor= Utils.decToHex(Integer.parseInt(beacon.getId3().toString()));
                 }
                 else
                 {
@@ -479,20 +506,9 @@ public class MainActivity extends AppCompatActivity implements BeaconConsumer, R
         }
     }
 
-    private String decToHex(int dec)
-    {
-        return Integer.toHexString(dec);
-    }
-
-    private int hexToDec(String hex)
-    {
-        return Integer.parseInt(hex, 16);
-    }
-
     @Override
     public void onBleScannerResult(List<LiveBeaconReading> readings)
     {
-        Log.d(TAG, "onBleScannerResult: " + readings.size());
         myBeacons = new ArrayList<>();
         for(LiveBeaconReading liveBeaconReading : readings)
         {
@@ -504,8 +520,8 @@ public class MainActivity extends AppCompatActivity implements BeaconConsumer, R
             myBeacon.UUID = uuid;
             if(isHexChecked)
             {
-                myBeacon.Major = decToHex(Integer.parseInt(major));
-                myBeacon.Minor= decToHex(Integer.parseInt(minor));
+                myBeacon.Major = Utils.decToHex(Integer.parseInt(major));
+                myBeacon.Minor= Utils.decToHex(Integer.parseInt(minor));
             }
             else
             {
@@ -519,7 +535,7 @@ public class MainActivity extends AppCompatActivity implements BeaconConsumer, R
             myBeacons.add(myBeacon);
         }
 
-        Collections.sort(myBeacons, MyBeacon.Comparators.MAJOR_MINOR_RSSI);
+        Collections.sort(myBeacons, MyBeacon.Comparators.MAJOR_MINOR_RSSI_ASC);
 
         runOnUiThread(new Runnable()
         {

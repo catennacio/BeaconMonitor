@@ -2,41 +2,56 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
+
     <TextView
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
         android:layout_margin="10dp"
+        android:layout_weight="1"
         android:gravity="end"
         android:textAlignment="viewEnd"
+        android:minWidth="80dp"
+        android:id="@+id/tv_mac_address"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:layout_weight="1"
+        android:gravity="end"
+        android:textAlignment="viewEnd"
+        android:minWidth="30dp"
         android:id="@+id/tv_major"/>
 
     <!--android:textColor="@drawable/beacon_list_item_selector"-->
     <TextView
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
         android:layout_margin="10dp"
+        android:layout_weight="1"
         android:gravity="end"
         android:textAlignment="viewEnd"
+        android:minWidth="30dp"
         android:id="@+id/tv_minor"/>
 
     <TextView
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
         android:layout_margin="10dp"
+        android:layout_weight="1"
         android:gravity="end"
         android:textAlignment="viewEnd"
+        android:minWidth="30dp"
         android:id="@+id/tv_rssi"/>
 
     <TextView
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
         android:layout_margin="10dp"
+        android:layout_weight="1"
         android:gravity="end"
         android:textAlignment="viewEnd"
+        android:minWidth="30dp"
         android:id="@+id/tv_txpower"/>
 </LinearLayout>
